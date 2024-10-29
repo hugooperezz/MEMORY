@@ -13,7 +13,7 @@ def solicitar_tamaño_tablero():
     while True:
         filas = int(input("Ingrese el número de filas (entre 2 y 6): "))
         columnas = int(input("Ingrese el número de columnas (entre 2 y 6): "))
-        if 2 <= filas <= 6 and 2 <= columnas <= 6:
+        if 2 <= filas <= 6 and 2 <= columnas <= 5:
             if (filas * columnas) % 2 == 0:
                 crear_tablero_oculto(filas, columnas)
                 crear_tablero_no_ocultar(filas,columnas)
@@ -30,8 +30,8 @@ def crear_tablero_oculto(filas, columnas):
     
     print("\nTabla de resultados:")
     for i in range(filas):
-        tablero = [emoji] * columnas  # Crear una fila de 'columnas' elementos
-        print(" ".join(tablero))  # Imprimir la fila separada por espacios
+        tablero = [emoji] * columnas 
+        print(" ".join(tablero))  
         
 #Metodo para crear el tablero desordenado con emojis
 def crear_tablero_no_ocultar(filas, columnas):
@@ -48,8 +48,8 @@ def crear_tablero_no_ocultar(filas, columnas):
     # Imprimir el tablero
     print("\nTablero de resultados:")
     for i in range(filas):
-        fila = cartas[i * columnas:(i + 1) * columnas]  # Obtener la fila correspondiente de la lista mezclada
-        print(" ".join(fila))  # Imprimir la fila separada por espacios
+        fila = cartas[i * columnas:(i + 1) * columnas]  
+        print(" ".join(fila)) 
 
 #Inicio del juego
 jugar()
