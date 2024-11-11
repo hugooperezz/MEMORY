@@ -17,7 +17,7 @@ def menu():
         case 2:
             solicitar_tamaño_tablero(opcion)
         case 3:
-            print("Proximamente: Maquina VS Maquina")
+            solicitar_tamaño_tablero(opcion)
         case _:
             print("Error: Opción no reconocida")
 
@@ -36,7 +36,7 @@ def solicitar_tamaño_tablero(opcion):
                     case 2:
                         PersonaVSMaquina(tablero_real, tablero_oculto, filas, columnas)
                     case 3:
-                        print("Proximamente: Maquina VS Maquina")
+                        MaquinaVSMaquina(tablero_real, tablero_oculto, filas, columnas)
                     case _:
                         print("Error: Opción no reconocida")
                 
@@ -198,5 +198,62 @@ def mostrar_resultados_finales_PersonaVSMaquina(puntajes):
     else:
         print("¡Es un empate!")
 
+#Metodo de MaquinaVSMaquina
+def MaquinaVSMaquina (tablero_real, tablero_oculto, filas, columnas):
+    jugadores = ["Maquina 1", "Maquina 2"]
+    puntajes = {jugadores[0]: 0, jugadores[1]: 0}
+    turno = 0  # 0 para Jugador 1, 1 para la Maquina
+
+    while not todas_las_parejas_encontradas(tablero_oculto):
+        print("\nTablero actual:")
+        mostrar_tablero(tablero_oculto)
+        
+        print(f"\nTurno de {jugadores[turno]}")
+
+        condicion = True
+        while condicion:
+            fila1, col1 = solicitar_coordenadas_MaquinaVSMaquina(filas, columnas, tablero_oculto)
+            fila2, col2 = solicitar_coordenadas_MaquinaVSMaquina(filas, columnas, tablero_oculto)
+            if (fila1 == fila2 and col1 == col2):
+                print("Error: No puedes seleccionar dos veces la misma carta.")
+            else:
+                condicion = False
+        
+        # Mostrar temporalmente las cartas seleccionadas
+        tablero_oculto[fila1][col1] = tablero_real[fila1][col1]
+        tablero_oculto[fila2][col2] = tablero_real[fila2][col2]
+        mostrar_tablero(tablero_oculto)
+
+        if tablero_real[fila1][col1] == tablero_real[fila2][col2]:
+            print("¡Encontraste una pareja!")
+            puntajes[jugadores[turno]] += 2
+        else:
+            print("No es una pareja. Las cartas se ocultan de nuevo.")
+            tablero_oculto[fila1][col1] = "⬜"
+            tablero_oculto[fila2][col2] = "⬜"
+            turno = 1 - turno  # Cambia el turno
+
+    mostrar_resultados_finales_MaquinaVSMaquina(puntajes)
+
+#Metodo que introduce las cordenadas random para las 2 maquinas
+def solicitar_coordenadas_MaquinaVSMaquina(filas, columnas, tablero_oculto):
+    while True:
+        fila = random.randint(0,filas - 1)
+        col = random.randint(0, columnas - 1)
+        if tablero_oculto[fila][col] == "⬜":
+            return fila, col
+
+# Método para mostrar los resultados finales del modo PersonaVSMaquina
+def mostrar_resultados_finales_MaquinaVSMaquina(puntajes):
+    print("\n¡Juego terminado!")
+    print("Puntajes finales:")
+    for jugador, puntaje in puntajes.items():
+        print(f"{jugador}: {puntaje} puntos")
+    if puntajes["Maquina 1"] > puntajes["Maquina 2"]:
+        print("Maquina 1 gana!")
+    elif puntajes["Maquina 1"] < puntajes["Maquina 2"]:
+        print("¡Maquina 2 gana!")
+    else:
+        print("¡Es un empate!")
 # Inicio del juego
 jugar()
